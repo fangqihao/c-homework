@@ -65,25 +65,52 @@ int peek(Stack* ps, int * result) {
 }
 
 
-int rpn(char* a) {
-    int r = 0;
-    switch (a[100]) {
-        case '+':
-            r = a[0] + a[1];
-            break;
-        case '-':
-            r = a[0] - a[1];
-            break;
-        case '*':
-            r = a[0] * a[1];
-            break;
-        case '/':
-            r = a[0] / a[1];
-            break;
-        default:
-            printf("error\n");
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include "stack.h"
+ 
+ 
+int main()
+{
+//  后缀表达式的计算
+ 
+    stack s;
+    int i = 0, len = 0;
+    int tmp1, tmp2;
+    int op;
+//  char in[100] = {0};
+    char in[] = {'6','5','2','3','+','8','*','+','3','+','*'};
+    s = create_stack();
+//  while((in[i] = getchar())!=EOF) {
+//      i++;
+//  }
+ 
+    len = strlen(in);
+ 
+    for(i = 0; i<len; i++) {
+        tmp1 = in[i];
+        if(tmp1=='+' || tmp1=='-' || tmp1 == '*' || tmp1 == '/') {
+            op = tmp1;
+            tmp1 = pop(s);
+            tmp2 = pop(s);
+            switch(op) {
+                case '+': push(s, tmp1+tmp2);break;
+                case '-': push(s, tmp1-tmp2);break;
+                case '*': push(s, tmp1*tmp2);break;
+                case '/': push(s, tmp1/tmp2);break;
+                default: break;
+            }
+        } else if(isdigit(tmp1)) {
+            push(s,tmp1-48);
+        }
+        output(s);
     }
-    return r;
+ 
+    output(s);
+    return 0;
 }
 
 
